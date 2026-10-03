@@ -1,0 +1,14 @@
+artifact_uri: /home/runner/work/Workflow-CI/Workflow-CI/mlruns/623308726856599716/3c156c7d319b4f92ace3044b77c517c8/artifacts
+end_time: 1791003847402
+entry_point_name: ''
+experiment_id: '623308726856599716'
+lifecycle_stage: active
+run_id: 3c156c7d319b4f92ace3044b77c517c8
+run_name: industrious-loon-526
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1791003838902
+status: 3
+tags: []
+user_id: runner
