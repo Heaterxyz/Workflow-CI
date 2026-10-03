@@ -1,0 +1,4 @@
+mlflow==3.16.1
+scikit-learn==1.5.1
+pandas==2.2.0
+numpy==1.26.4

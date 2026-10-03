@@ -1,0 +1,81 @@
+name: CI - Retraining Model (MLflow Project)
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - "artifacts/**"
+  workflow_dispatch:
+
+env:
+  MLFLOW_ALLOW_FILE_STORE: "true" # MLflow 3.x: izinkan file store lokal
+  # Satu tracking store absolut dipakai bersama oleh `mlflow run` (CLI) dan skrip training
+  MLFLOW_TRACKING_URI: ${{ github.workspace }}/mlruns
+  DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+  DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+  IMAGE_NAME: telco-churn-model
+
+jobs:
+  retrain:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      # ===== Basic/Skilled: retraining model saat trigger dipantik =====
+      - name: Retraining model via MLflow Project
+        run: mlflow run MLProject --env-manager local --experiment-name Telco_Churn_CI
+
+      # ===== Skilled: simpan artefak ke repository GitHub yang sama =====
+      - name: Salin artefak model ke folder artifacts/
+        run: |
+          mkdir -p artifacts
+          rm -rf artifacts/model artifacts/mlruns
+          cp -r MLProject/model artifacts/model
+          cp -r mlruns artifacts/mlruns
+          echo "Model terbaru diretraining pada: $(date -u '+%Y-%m-%d %H:%M:%S UTC')" > artifacts/README.txt
+
+      - name: Upload artefak ke GitHub Actions
+        uses: actions/upload-artifact@v4
+        with:
+          name: model-artifacts
+          path: artifacts/
+
+      - name: Commit artefak ke repository
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add artifacts/
+          if git diff --staged --quiet; then
+            echo "Tidak ada perubahan artefak, lewati commit."
+          else
+            git commit -m "ci: update artefak model hasil retraining [skip ci]"
+            git push
+          fi
+
+      # ===== Advanced: Docker image ke Docker Hub (mlflow build-docker) =====
+      - name: Login Docker Hub
+        if: env.DOCKERHUB_USERNAME != ''
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build & push Docker image (mlflow build-docker)
+        if: env.DOCKERHUB_USERNAME != ''
+        run: |
+          # Catatan: pada MLflow 3.x perintah `mlflow build-docker` diubah namanya
+          # menjadi `mlflow models build-docker` (fungsi yang sama).
+          mlflow models build-docker -m MLProject/model -n "$DOCKERHUB_USERNAME/$IMAGE_NAME:latest"
+          docker push "$DOCKERHUB_USERNAME/$IMAGE_NAME:latest"

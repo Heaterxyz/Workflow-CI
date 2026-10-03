@@ -1,0 +1,29 @@
+name: telco-churn-mlproject
+
+conda_env: conda.yaml
+
+entry_points:
+  main:
+    parameters:
+      data_path:
+        type: str
+        default: namadataset_preprocessing/telco_churn_preprocessing.csv
+      n_estimators:
+        type: int
+        default: 300
+      max_depth:
+        type: int
+        default: 10
+      min_samples_leaf:
+        type: int
+        default: 1
+      test_size:
+        type: float
+        default: 0.2
+      model_dir:
+        type: str
+        default: model
+    command: >-
+      python modelling.py --data-path {data_path} --n-estimators {n_estimators}
+      --max-depth {max_depth} --min-samples-leaf {min_samples_leaf}
+      --test-size {test_size} --model-dir {model_dir}
