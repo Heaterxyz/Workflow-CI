@@ -13,6 +13,7 @@ Perbedaan dengan versi eksperimen (folder Membangun_model):
 
 import argparse
 import os
+import shutil
 
 # MLflow 3.x: izinkan file store lokal ./mlruns (mode lama) agar kompatibel
 os.environ.setdefault("MLFLOW_ALLOW_FILE_STORE", "true")
@@ -111,6 +112,9 @@ def main() -> None:
         )
 
         # Simpan salinan model ke folder lokal (dipakai CI untuk upload & build-docker)
+        # Hapus folder lama agar retraining bisa diulang tanpa error "already exists"
+        if os.path.isdir(args.model_dir):
+            shutil.rmtree(args.model_dir)
         mlflow.sklearn.save_model(
             sk_model=model,
             path=args.model_dir,

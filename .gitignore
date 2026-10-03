@@ -9,3 +9,7 @@ venv/
 # Log & temporary
 *.log
 *.pid
+
+# Hasil run CI (dibangun ulang otomatis oleh workflow, tidak perlu di-commit)
+/mlruns/
+/MLProject/model/
