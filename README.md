@@ -21,12 +21,12 @@ Workflow-CI/
 ## Tautan Docker Hub
 
 **Docker Image (Advanced):**
-`https://hub.docker.com/r/<DOCKERHUB_USERNAME>/telco-churn-model`
+https://hub.docker.com/r/heaterxyz/telco-churn-model
 
-Cara menjalankan image (setelah CI push):
+Cara menjalankan image (sudah ter-publish otomatis oleh CI):
 ```bash
-docker pull <DOCKERHUB_USERNAME>/telco-churn-model:latest
-docker run -p 5001:8080 <DOCKERHUB_USERNAME>/telco-churn-model:latest
+docker pull heaterxyz/telco-churn-model:latest
+docker run -p 5001:8080 heaterxyz/telco-churn-model:latest
 # endpoint: http://localhost:5001/invocations
 ```
 
@@ -43,6 +43,6 @@ Hasil: model tersimpan di `MLProject/model/`, tracking run di `mlruns/`.
 
 1. **Basic** — retraining model dijalankan melalui `mlflow run MLProject` setiap trigger (push / manual).
 2. **Skilled** — artefak model disimpan ke repository GitHub yang sama (folder `artifacts/`) dan di-upload sebagai GitHub Actions artifact.
-3. **Advanced** — image Docker dibuat dengan `mlflow models build-docker` (pada MLflow 3.x, bentuk baru dari `mlflow build-docker`) lalu di-push ke Docker Hub. Membutuhkan secrets:
-   - `DOCKERHUB_USERNAME`
+3. **Advanced** — image Docker dibuat dengan `mlflow models build-docker` (pada MLflow 3.x, bentuk baru dari `mlflow build-docker`) lalu di-push ke Docker Hub (`heaterxyz/telco-churn-model:latest`) menggunakan secrets:
+   - `DOCKERHUB_USERNAME` = heaterxyz
    - `DOCKERHUB_TOKEN` (access token Docker Hub)
