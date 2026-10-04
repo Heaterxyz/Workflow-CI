@@ -1,0 +1,14 @@
+artifact_uri: /home/runner/work/Workflow-CI/Workflow-CI/mlruns/243898799663181289/33cd9b19e3534841829a988e0c3e8444/artifacts
+end_time: 1791087837126
+entry_point_name: ''
+experiment_id: '243898799663181289'
+lifecycle_stage: active
+run_id: 33cd9b19e3534841829a988e0c3e8444
+run_name: tasteful-donkey-7
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1791087824996
+status: 3
+tags: []
+user_id: runner

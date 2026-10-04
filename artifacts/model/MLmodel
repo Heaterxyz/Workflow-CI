@@ -18,7 +18,7 @@ is_signature_from_type_hint: false
 mlflow_version: 3.16.1
 model_id: null
 model_size_bytes: 21271755
-model_uuid: 95472b5861de4a32a1d76afb81ac3d24
+model_uuid: 0c6c04c466bb4220a533bd15db2eabf5
 prompts: null
 signature:
   inputs: '[{"type": "long", "name": "gender", "required": true}, {"type": "long",
@@ -53,4 +53,4 @@ signature:
   outputs: '[{"type": "tensor", "tensor-spec": {"dtype": "int64", "shape": [-1]}}]'
   params: null
 type_hint_from_example: false
-utc_time_created: '2026-10-04 04:14:32.440208'
+utc_time_created: '2026-10-04 04:23:53.001569'
