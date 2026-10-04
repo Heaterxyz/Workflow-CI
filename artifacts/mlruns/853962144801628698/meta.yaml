@@ -1,0 +1,9 @@
+artifact_location: /home/runner/work/Workflow-CI/Workflow-CI/mlruns/853962144801628698
+creation_time: 1791087264077
+effective_trace_archival_retention: null
+experiment_id: '853962144801628698'
+last_update_time: 1791087264077
+lifecycle_stage: active
+name: Telco_Churn_CI
+trace_location: null
+workspace: default
